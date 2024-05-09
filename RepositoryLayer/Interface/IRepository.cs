@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccessLayer.Interface
+namespace GenericRepository.Interface
 {
     public interface IRepository<TEntity> :  IDisposable where TEntity : class
     {
@@ -15,7 +15,7 @@ namespace DataAccessLayer.Interface
         /// <para>_repository.Insert(newEntity);</para>
         /// </summary>
         /// <param name="entity">Entity instance to be saved to our repository.</param>
-        void Create(TEntity entity);
+        Task<Task> CreateAsync(TEntity entity);
 
         /// <summary>
         /// Method to update a single entity.
@@ -23,7 +23,7 @@ namespace DataAccessLayer.Interface
         /// <para>_repository.Update(entity);</para>
         /// </summary>
         /// <param name="entity">Entity instance to be saved to our repository.</param>
-        void Update(TEntity entity);
+        Task<Task> UpdateAsync(TEntity entity);
 
         /// <summary>
         /// Delete an entity from our repository.
@@ -31,7 +31,7 @@ namespace DataAccessLayer.Interface
         /// <para>_repository.Delete(entity);</para>
         /// </summary>
         /// <param name="entity">Entity instance to be deleted to our repository.</param>
-        void Delete(TEntity entity);
+        Task<Task> DeleteAsync(TEntity entity);
 
         /// <summary>
         /// Select an entity using it's primary keys as search criteria.
@@ -41,7 +41,7 @@ namespace DataAccessLayer.Interface
         /// </summary>
         /// <param name="primaryKeys">Primary key properties of our entity.</param>
         /// <returns>Returns an entity from our repository.</returns>
-        TEntity GetByKey(params object[] primaryKeys);
+        Task<TEntity> GetByKeyAsync(params object[] primaryKeys);
 
         /// <summary>
         /// Select all entities from our repository
@@ -49,7 +49,7 @@ namespace DataAccessLayer.Interface
         /// <para>_repository.SelectAll();</para>
         /// </summary>
         /// <returns>Returns all entities from our repository.</returns>
-        IList<TEntity> GetAll();
+        Task<IList<TEntity>> GetAllAsync();
 
         /// <summary>
         /// Select an entity from our repository using a filter.
@@ -59,6 +59,6 @@ namespace DataAccessLayer.Interface
         /// </summary>
         /// <param name="predicate">Filter applied to our search.</param>
         /// <returns>Returns an entity from our repository.</returns>
-        TEntity Select(Expression<Func<TEntity, bool>> predicate);
+        Task<IList<TEntity>> SelectAsync(Expression<Func<TEntity, bool>> predicate);
     }
 }

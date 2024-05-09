@@ -1,8 +1,8 @@
-﻿using DataAccessLayer.Interface;
+﻿using GenericRepository.Interface;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 
-namespace DataAccessLayer.Repository
+namespace GenericRepository.Repository
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
@@ -22,14 +22,16 @@ namespace DataAccessLayer.Repository
             }
         }
 
-        public void Create(TEntity entity)
+        public async  Task<Task> CreateAsync(TEntity entity)
         {
             DbSet.Add(entity);
+            return Task.CompletedTask;
         }
 
-        public void Delete(TEntity entity)
+        public async Task<Task> DeleteAsync(TEntity entity)
         {
             DbSet.Remove(entity);
+            return Task.CompletedTask;
         }
 
         public void Dispose()
@@ -37,25 +39,25 @@ namespace DataAccessLayer.Repository
             GC.SuppressFinalize(this);
         }
 
-        public IList<TEntity> GetAll()
+        public async Task<IList<TEntity>> GetAllAsync()
         {
-            return DbSet.ToList();
+            return await Task.FromResult(DbSet.ToList());
         }
 
-        public TEntity GetByKey(params object[] primaryKeys)
+        public async Task<TEntity> GetByKeyAsync(params object[] primaryKeys)
         {
-            return DbSet.Find(primaryKeys);
+            return await Task.FromResult(DbSet.Find(primaryKeys));
         }
 
-        public TEntity Select(Expression<Func<TEntity, bool>> predicate)
+        public async Task<IList<TEntity>> SelectAsync(Expression<Func<TEntity, bool>> predicate)
         {
-            return DbSet.Where(predicate)
-                        .FirstOrDefault();
+            return await Task.FromResult(DbSet.Where(predicate).ToList());
         }
 
-        public void Update(TEntity entity)
+        public async Task<Task> UpdateAsync(TEntity entity)
         {
             DbSet.Update(entity);
+            return Task.CompletedTask;
         }
     }
 }

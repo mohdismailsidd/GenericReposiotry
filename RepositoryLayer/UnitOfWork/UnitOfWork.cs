@@ -1,8 +1,8 @@
-﻿using DataAccessLayer.Interface;
+﻿using GenericRepository.Interface;
 using Microsoft.EntityFrameworkCore;
 using RepositoryLayer.Resources;
 
-namespace DataAccessLayer.UnitOfWork
+namespace GenericRepository.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {
@@ -37,9 +37,10 @@ namespace DataAccessLayer.UnitOfWork
         /// <summary>
         /// Start a new transaction.
         /// </summary>
-        public void BeginTransaction()
+        public async Task<bool> BeginTransaction()
         {
             _disposed = false;
+            return await Task.FromResult(true);
         }
 
         #endregion
@@ -49,15 +50,15 @@ namespace DataAccessLayer.UnitOfWork
         /// <summary>
         /// Save changes to our database.
         /// </summary>
-        public bool Commit()
+        public async Task<bool> Commit()
         {
             using (var transaction = _dbContext.Database.BeginTransaction())
             {
                 try
                 {
-                    _dbContext.SaveChanges();
-                    transaction.Commit();
-                    DetachAll();
+                    await _dbContext.SaveChangesAsync();
+                    await transaction.CommitAsync();
+                    await DetachAllAsync();
 
                     OperationSuccesful = true;
                     OperationMessage = Info.OperationSuccess;
@@ -84,7 +85,7 @@ namespace DataAccessLayer.UnitOfWork
         /// <summary>
         /// Detaches all entities from the context that were added or modified.
         /// </summary>
-        private void DetachAll()
+        private async Task<bool> DetachAllAsync()
         {
             foreach (var dbEntityEntry in _dbContext.ChangeTracker.Entries().ToArray())
             {
@@ -93,6 +94,7 @@ namespace DataAccessLayer.UnitOfWork
                     dbEntityEntry.State = EntityState.Detached;
                 }
             }
+            return await Task.FromResult(true);
         }
 
         #endregion

@@ -4,13 +4,14 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <PackageId>GenericRepository</PackageId>
+    <PackageId>LDN.GenericRepository</PackageId>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Title>Generic Repository</Title>
     <Product>GenericRepository</Product>
     <Authors>Mohd Ismail Siddiqui</Authors>
     <Company>LearningDotNet</Company>
     <Description>Generic Repository  is a project which provides generic repo with very generic methods.</Description>
+    <SignAssembly>False</SignAssembly>
   </PropertyGroup>
 
   <ItemGroup>

@@ -4,18 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccessLayer.Interface
+namespace GenericRepository.Interface
 {
     public interface IUnitOfWork : IDisposable
     {
         /// <summary>
         /// Start a new transaction.
         /// </summary>
-        void BeginTransaction();
+        Task<bool> BeginTransaction();
 
         /// <summary>
         /// Save changes to our database.
         /// </summary>
-        bool Commit();
+        Task<bool> Commit();
     }
 }
