@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GenericRepository.Interface
 {
-    public interface IRepository<TEntity> :  IDisposable where TEntity : class
+    public interface IRepository<TDTOs> :  IDisposable where TDTOs : class  
     {
         /// <summary>
         /// Insert a new entity to our repository.
@@ -15,7 +15,7 @@ namespace GenericRepository.Interface
         /// <para>_repository.Insert(newEntity);</para>
         /// </summary>
         /// <param name="entity">Entity instance to be saved to our repository.</param>
-        Task<Task> CreateAsync(TEntity entity);
+        Task<Task> CreateAsync(TDTOs entity);
 
         /// <summary>
         /// Method to update a single entity.
@@ -23,7 +23,7 @@ namespace GenericRepository.Interface
         /// <para>_repository.Update(entity);</para>
         /// </summary>
         /// <param name="entity">Entity instance to be saved to our repository.</param>
-        Task<Task> UpdateAsync(TEntity entity);
+        Task<Task> UpdateAsync(TDTOs entity);
 
         /// <summary>
         /// Delete an entity from our repository.
@@ -31,7 +31,7 @@ namespace GenericRepository.Interface
         /// <para>_repository.Delete(entity);</para>
         /// </summary>
         /// <param name="entity">Entity instance to be deleted to our repository.</param>
-        Task<Task> DeleteAsync(TEntity entity);
+        Task<Task> DeleteAsync(TDTOs entity);
 
         /// <summary>
         /// Select an entity using it's primary keys as search criteria.
@@ -41,7 +41,7 @@ namespace GenericRepository.Interface
         /// </summary>
         /// <param name="primaryKeys">Primary key properties of our entity.</param>
         /// <returns>Returns an entity from our repository.</returns>
-        Task<TEntity> GetByKeyAsync(params object[] primaryKeys);
+        Task<TDTOs> GetByKeyAsync(params object[] primaryKeys);
 
         /// <summary>
         /// Select all entities from our repository
@@ -49,16 +49,6 @@ namespace GenericRepository.Interface
         /// <para>_repository.SelectAll();</para>
         /// </summary>
         /// <returns>Returns all entities from our repository.</returns>
-        Task<IList<TEntity>> GetAllAsync();
-
-        /// <summary>
-        /// Select an entity from our repository using a filter.
-        /// <para>Examples:</para>
-        /// <para>_repository.Select(p=> p.UserId == 1);</para>
-        /// <para>_repository.Select(p=> p.UserName.Contains("John") == true);</para>
-        /// </summary>
-        /// <param name="predicate">Filter applied to our search.</param>
-        /// <returns>Returns an entity from our repository.</returns>
-        Task<IList<TEntity>> SelectAsync(Expression<Func<TEntity, bool>> predicate);
+        Task<IEnumerable<TDTOs>> GetAllAsync();
     }
 }

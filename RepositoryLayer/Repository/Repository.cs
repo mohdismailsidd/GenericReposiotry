@@ -1,20 +1,27 @@
-﻿using GenericRepository.Interface;
+﻿
+using GenericRepository.Interface;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using RepositoryLayer.Exception;
 
 namespace GenericRepository.Repository
 {
-    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="TDTOs"></typeparam>
+    /// <typeparam name="TEntity"></typeparam>
+    public class Repository<TDTOs, TEntity> : IRepository<TDTOs> where TDTOs : class where TEntity : class
     {
         protected readonly DbContext _dbContext;
-        public DbSet<TEntity> DbSet;
+        public DbSet<TEntity> _dbSet;
 
         public Repository(DbContext dbContext)
         {
             _dbContext = dbContext ?? throw new ArgumentNullException("dbContext");
             try
             {
-                DbSet = dbContext.Set<TEntity>();
+                _dbSet = dbContext.Set<TEntity>();
             }
             catch (InvalidOperationException ex)
             {
@@ -22,42 +29,130 @@ namespace GenericRepository.Repository
             }
         }
 
-        public async  Task<Task> CreateAsync(TEntity entity)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dtos"></param>
+        /// <returns></returns>
+        protected virtual IEnumerable<TEntity> TransformDTOToEntity(IEnumerable<TDTOs> dtos)
         {
-            DbSet.Add(entity);
-            return Task.CompletedTask;
+            List<TEntity> entity = new List<TEntity>();
+            if(dtos !=  null)
+            {
+                // need to implement  in  specialise  class
+            }
+            return entity;
         }
 
-        public async Task<Task> DeleteAsync(TEntity entity)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        protected virtual IEnumerable<TDTOs> TransformEntityToDTOs(IEnumerable<TEntity> entity)
         {
-            DbSet.Remove(entity);
-            return Task.CompletedTask;
+            List<TDTOs> dtos = new List<TDTOs>();
+            if (entity != null)
+            {
+                // need to implement  in  specialise  class
+            }
+            return dtos;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dtos"></param>
+        /// <returns></returns>
+        protected virtual bool ValidateDTOsState(TDTOs dtos)
+        {
+            return true;
+            // dtos state validation
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dtos"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidStateException"></exception>
+        public virtual async Task<Task> CreateAsync(TDTOs dtos)
+        {
+            if (ValidateDTOsState(dtos))
+            {
+                _dbSet.Add(TransformDTOToEntity(new List<TDTOs> { dtos }).FirstOrDefault());
+                return Task.CompletedTask;
+            }
+            else
+            {
+                throw new InvalidStateException("Dtos is invalid state");
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dtos"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidStateException"></exception>
+        public virtual async Task<Task> DeleteAsync(TDTOs dtos)
+        {
+            if (ValidateDTOsState(dtos))
+            {
+                _dbSet.Remove(TransformDTOToEntity(new List<TDTOs> { dtos }).FirstOrDefault());
+                return Task.CompletedTask;
+            }
+            else
+            {
+                throw new InvalidStateException("Dtos is invalid state");
+            }
+        }
+
+        /// <summary>
+        ///      Performs application-defined tasks associated with freeing, releasing, or resetting
+        ///      unmanaged resources.
+        /// </summary>
         public void Dispose()
         {
             GC.SuppressFinalize(this);
         }
 
-        public async Task<IList<TEntity>> GetAllAsync()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public virtual async Task<IEnumerable<TDTOs>> GetAllAsync()
         {
-            return await Task.FromResult(DbSet.ToList());
+            return await Task.FromResult(TransformEntityToDTOs(_dbSet.ToList()));
         }
 
-        public async Task<TEntity> GetByKeyAsync(params object[] primaryKeys)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="primaryKeys"></param>
+        /// <returns></returns>
+        public virtual async Task<TDTOs> GetByKeyAsync(params object[] primaryKeys)
         {
-            return await Task.FromResult(DbSet.Find(primaryKeys));
+            return await Task.FromResult(TransformEntityToDTOs(new List<TEntity>() { _dbSet.Find(primaryKeys) }).FirstOrDefault());
         }
 
-        public async Task<IList<TEntity>> SelectAsync(Expression<Func<TEntity, bool>> predicate)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dtos"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidStateException"></exception>
+        public virtual async Task<Task> UpdateAsync(TDTOs dtos)
         {
-            return await Task.FromResult(DbSet.Where(predicate).ToList());
-        }
-
-        public async Task<Task> UpdateAsync(TEntity entity)
-        {
-            DbSet.Update(entity);
-            return Task.CompletedTask;
+            if (ValidateDTOsState(dtos))
+            {
+                _dbSet.Update(TransformDTOToEntity(new List<TDTOs> { dtos }).FirstOrDefault());
+                return Task.CompletedTask;
+            }
+            else
+            {
+                throw new InvalidStateException("Dtos is invalid state");
+            }
         }
     }
 }
