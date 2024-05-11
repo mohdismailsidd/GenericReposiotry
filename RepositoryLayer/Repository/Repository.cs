@@ -1,4 +1,4 @@
-﻿using LDN.Framework.GenericRepository.Exception;
+﻿using LDN.Framework.GenericRepository.Exceptions;
 using LDN.Framework.GenericRepository.Interface;
 using Microsoft.EntityFrameworkCore;
 
