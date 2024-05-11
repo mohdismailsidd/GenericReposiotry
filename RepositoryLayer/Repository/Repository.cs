@@ -79,6 +79,7 @@ namespace LDN.Framework.GenericRepository.Repository
             if (ValidateDTOsState(dtos))
             {
                 _dbSet.Add(TransformDTOToEntity(new List<TDTOs> { dtos }).FirstOrDefault());
+                _dbContext.SaveChanges();
                 return Task.CompletedTask;
             }
             else
@@ -98,6 +99,7 @@ namespace LDN.Framework.GenericRepository.Repository
             if (ValidateDTOsState(dtos))
             {
                 _dbSet.Remove(TransformDTOToEntity(new List<TDTOs> { dtos }).FirstOrDefault());
+                _dbContext.SaveChanges();
                 return Task.CompletedTask;
             }
             else
@@ -145,6 +147,7 @@ namespace LDN.Framework.GenericRepository.Repository
             if (ValidateDTOsState(dtos))
             {
                 _dbSet.Update(TransformDTOToEntity(new List<TDTOs> { dtos }).FirstOrDefault());
+                _dbContext.SaveChanges();
                 return Task.CompletedTask;
             }
             else
