@@ -1,6 +1,5 @@
 ﻿
 using GenericRepository.Interface;
-using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using RepositoryLayer.Exception;
 
@@ -37,7 +36,7 @@ namespace GenericRepository.Repository
         protected virtual IEnumerable<TEntity> TransformDTOToEntity(IEnumerable<TDTOs> dtos)
         {
             List<TEntity> entity = new List<TEntity>();
-            if(dtos !=  null)
+            if (dtos != null)
             {
                 // need to implement  in  specialise  class
             }
