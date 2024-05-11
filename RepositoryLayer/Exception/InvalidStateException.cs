@@ -1,4 +1,4 @@
-﻿namespace LDN.Framework.GenericRepository.Exception
+﻿namespace LDN.Framework.GenericRepository.Exceptions
 {
     [Serializable]
     public class InvalidStateException : System.Exception

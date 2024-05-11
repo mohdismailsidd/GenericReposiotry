@@ -1,5 +1,7 @@
 ﻿using LDN.Framework.GenericRepository.Interface;
+using LDN.Framework.GenericRepository.Resources;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace LDN.Framework.GenericRepository.UnitOfWork
 {

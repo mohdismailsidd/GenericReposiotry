@@ -1,4 +1,5 @@
-﻿using LDN.Framework.GenericRepository.Interface;
+﻿using LDN.Framework.GenericRepository.Exception;
+using LDN.Framework.GenericRepository.Interface;
 using Microsoft.EntityFrameworkCore;
 
 namespace LDN.Framework.GenericRepository.Repository
