@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GenericRepository.Interface
+﻿namespace LDN.Framework.GenericRepository.Interface
 {
     public interface IUnitOfWork : IDisposable
     {

@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GenericRepository.Interface
+﻿namespace LDN.Framework.GenericRepository.Interface
 {
-    public interface IRepository<TDTOs> :  IDisposable where TDTOs : class  
+    public interface IRepository<TDTOs> : IDisposable where TDTOs : class
     {
         /// <summary>
         /// Insert a new entity to our repository.

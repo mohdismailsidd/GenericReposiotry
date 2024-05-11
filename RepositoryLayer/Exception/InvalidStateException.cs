@@ -1,8 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using System.Runtime.Serialization;
-
-namespace RepositoryLayer.Exception
+﻿namespace LDN.Framework.GenericRepository.Exception
 {
     [Serializable]
     public class InvalidStateException : System.Exception

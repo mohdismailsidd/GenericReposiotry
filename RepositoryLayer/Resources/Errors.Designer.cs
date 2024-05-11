@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace RepositoryLayer.Resources {
+namespace LDN.Framework.GenericRepository.Resources {
     using System;
     
     

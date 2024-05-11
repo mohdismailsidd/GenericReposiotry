@@ -1,9 +1,7 @@
-﻿
-using GenericRepository.Interface;
+﻿using LDN.Framework.GenericRepository.Interface;
 using Microsoft.EntityFrameworkCore;
-using RepositoryLayer.Exception;
 
-namespace GenericRepository.Repository
+namespace LDN.Framework.GenericRepository.Repository
 {
     /// <summary>
     /// 

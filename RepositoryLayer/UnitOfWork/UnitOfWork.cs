@@ -1,8 +1,7 @@
-﻿using GenericRepository.Interface;
+﻿using LDN.Framework.GenericRepository.Interface;
 using Microsoft.EntityFrameworkCore;
-using RepositoryLayer.Resources;
 
-namespace GenericRepository.UnitOfWork
+namespace LDN.Framework.GenericRepository.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {
