@@ -121,9 +121,9 @@ namespace LDN.Framework.GenericRepository.Repository
         /// 
         /// </summary>
         /// <returns></returns>
-        public virtual async Task<IEnumerable<TDTOs>> GetAllAsync()
+        public virtual async Task<IQueryable<TDTOs>> GetAllAsync()
         {
-            return await Task.FromResult(TransformEntityToDTOs(_dbSet.ToList()));
+            return await Task.FromResult(TransformEntityToDTOs(_dbSet.ToList()).AsQueryable());
         }
 
         /// <summary>
@@ -131,9 +131,9 @@ namespace LDN.Framework.GenericRepository.Repository
         /// </summary>
         /// <param name="primaryKeys"></param>
         /// <returns></returns>
-        public virtual async Task<TDTOs> GetByKeyAsync(params object[] primaryKeys)
+        public virtual async Task<IQueryable<TDTOs>> GetByKeyAsync(params object[] primaryKeys)
         {
-            return await Task.FromResult(TransformEntityToDTOs(new List<TEntity>() { _dbSet.Find(primaryKeys) }).FirstOrDefault());
+            return await Task.FromResult(TransformEntityToDTOs(new List<TEntity>() { _dbSet.Find(primaryKeys) }).AsQueryable());
         }
 
         /// <summary>

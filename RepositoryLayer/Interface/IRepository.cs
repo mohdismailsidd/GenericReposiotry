@@ -1,4 +1,6 @@
-﻿namespace LDN.Framework.GenericRepository.Interface
+﻿using System.Linq;
+
+namespace LDN.Framework.GenericRepository.Interface
 {
     public interface IRepository<TDTOs> : IDisposable where TDTOs : class
     {
@@ -34,7 +36,7 @@
         /// </summary>
         /// <param name="primaryKeys">Primary key properties of our entity.</param>
         /// <returns>Returns an entity from our repository.</returns>
-        Task<TDTOs> GetByKeyAsync(params object[] primaryKeys);
+        Task<IQueryable<TDTOs>> GetByKeyAsync(params object[] primaryKeys);
 
         /// <summary>
         /// Select all entities from our repository
@@ -42,6 +44,6 @@
         /// <para>_repository.SelectAll();</para>
         /// </summary>
         /// <returns>Returns all entities from our repository.</returns>
-        Task<IEnumerable<TDTOs>> GetAllAsync();
+        Task<IQueryable<TDTOs>> GetAllAsync();
     }
 }
