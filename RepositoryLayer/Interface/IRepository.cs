@@ -2,7 +2,7 @@
 
 namespace LDN.Framework.GenericRepository.Interface
 {
-    public interface IRepository<TDTOs> : IDisposable where TDTOs : class
+    public interface IRepository<TEntity> : IDisposable where TEntity : class
     {
         /// <summary>
         /// Insert a new entity to our repository.
@@ -10,7 +10,7 @@ namespace LDN.Framework.GenericRepository.Interface
         /// <para>_repository.Insert(newEntity);</para>
         /// </summary>
         /// <param name="entity">Entity instance to be saved to our repository.</param>
-        Task<Task> CreateAsync(TDTOs entity);
+        Task<Task> CreateAsync(TEntity entity);
 
         /// <summary>
         /// Method to update a single entity.
@@ -18,7 +18,7 @@ namespace LDN.Framework.GenericRepository.Interface
         /// <para>_repository.Update(entity);</para>
         /// </summary>
         /// <param name="entity">Entity instance to be saved to our repository.</param>
-        Task<Task> UpdateAsync(TDTOs entity);
+        Task<Task> UpdateAsync(TEntity entity);
 
         /// <summary>
         /// Delete an entity from our repository.
@@ -26,7 +26,7 @@ namespace LDN.Framework.GenericRepository.Interface
         /// <para>_repository.Delete(entity);</para>
         /// </summary>
         /// <param name="entity">Entity instance to be deleted to our repository.</param>
-        Task<Task> DeleteAsync(TDTOs entity);
+        Task<Task> DeleteAsync(TEntity entity);
 
         /// <summary>
         /// Select an entity using it's primary keys as search criteria.
@@ -36,7 +36,7 @@ namespace LDN.Framework.GenericRepository.Interface
         /// </summary>
         /// <param name="primaryKeys">Primary key properties of our entity.</param>
         /// <returns>Returns an entity from our repository.</returns>
-        Task<IQueryable<TDTOs>> GetByKeyAsync(params object[] primaryKeys);
+        Task<TEntity> GetByKeyAsync(params object[] primaryKeys);
 
         /// <summary>
         /// Select all entities from our repository
@@ -44,6 +44,6 @@ namespace LDN.Framework.GenericRepository.Interface
         /// <para>_repository.SelectAll();</para>
         /// </summary>
         /// <returns>Returns all entities from our repository.</returns>
-        Task<IQueryable<TDTOs>> GetAllAsync();
+        Task<IQueryable<TEntity>> GetAllAsync();
     }
 }

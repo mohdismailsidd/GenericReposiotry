@@ -9,7 +9,7 @@ namespace LDN.Framework.GenericRepository.Repository
     /// </summary>
     /// <typeparam name="TDTOs"></typeparam>
     /// <typeparam name="TEntity"></typeparam>
-    public class Repository<TDTOs, TEntity> : IRepository<TDTOs> where TDTOs : class where TEntity : class
+    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         protected readonly DbContext _dbContext;
         public DbSet<TEntity> _dbSet;
@@ -32,37 +32,7 @@ namespace LDN.Framework.GenericRepository.Repository
         /// </summary>
         /// <param name="dtos"></param>
         /// <returns></returns>
-        protected virtual IEnumerable<TEntity> TransformDTOToEntity(IEnumerable<TDTOs> dtos)
-        {
-            List<TEntity> entity = new List<TEntity>();
-            if (dtos != null)
-            {
-                // need to implement  in  specialise  class
-            }
-            return entity;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="entity"></param>
-        /// <returns></returns>
-        protected virtual IEnumerable<TDTOs> TransformEntityToDTOs(IEnumerable<TEntity> entity)
-        {
-            List<TDTOs> dtos = new List<TDTOs>();
-            if (entity != null)
-            {
-                // need to implement  in  specialise  class
-            }
-            return dtos;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="dtos"></param>
-        /// <returns></returns>
-        protected virtual bool ValidateDTOsState(TDTOs dtos)
+        protected virtual bool ValidateDTOsState(TEntity entity)
         {
             return true;
             // dtos state validation
@@ -74,11 +44,11 @@ namespace LDN.Framework.GenericRepository.Repository
         /// <param name="dtos"></param>
         /// <returns></returns>
         /// <exception cref="InvalidStateException"></exception>
-        public virtual async Task<Task> CreateAsync(TDTOs dtos)
+        public virtual async Task<Task> CreateAsync(TEntity entity)
         {
-            if (ValidateDTOsState(dtos))
+            if (ValidateDTOsState(entity))
             {
-                _dbSet.Add(TransformDTOToEntity(new List<TDTOs> { dtos }).FirstOrDefault());
+                _dbSet.Add(entity);
                 _dbContext.SaveChanges();
                 return Task.CompletedTask;
             }
@@ -94,11 +64,11 @@ namespace LDN.Framework.GenericRepository.Repository
         /// <param name="dtos"></param>
         /// <returns></returns>
         /// <exception cref="InvalidStateException"></exception>
-        public virtual async Task<Task> DeleteAsync(TDTOs dtos)
+        public virtual async Task<Task> DeleteAsync(TEntity entity)
         {
-            if (ValidateDTOsState(dtos))
+            if (ValidateDTOsState(entity))
             {
-                _dbSet.Remove(TransformDTOToEntity(new List<TDTOs> { dtos }).FirstOrDefault());
+                _dbSet.Remove(entity);
                 _dbContext.SaveChanges();
                 return Task.CompletedTask;
             }
@@ -121,9 +91,9 @@ namespace LDN.Framework.GenericRepository.Repository
         /// 
         /// </summary>
         /// <returns></returns>
-        public virtual async Task<IQueryable<TDTOs>> GetAllAsync()
+        public virtual async Task<IQueryable<TEntity>> GetAllAsync()
         {
-            return await Task.FromResult(TransformEntityToDTOs(_dbSet.ToList()).AsQueryable());
+            return await Task.FromResult(_dbSet.ToList().AsQueryable());
         }
 
         /// <summary>
@@ -131,9 +101,9 @@ namespace LDN.Framework.GenericRepository.Repository
         /// </summary>
         /// <param name="primaryKeys"></param>
         /// <returns></returns>
-        public virtual async Task<IQueryable<TDTOs>> GetByKeyAsync(params object[] primaryKeys)
+        public virtual async Task<TEntity> GetByKeyAsync(params object[] primaryKeys)
         {
-            return await Task.FromResult(TransformEntityToDTOs(new List<TEntity>() { _dbSet.Find(primaryKeys) }).AsQueryable());
+            return await Task.FromResult(_dbSet.Find(primaryKeys));
         }
 
         /// <summary>
@@ -142,11 +112,11 @@ namespace LDN.Framework.GenericRepository.Repository
         /// <param name="dtos"></param>
         /// <returns></returns>
         /// <exception cref="InvalidStateException"></exception>
-        public virtual async Task<Task> UpdateAsync(TDTOs dtos)
+        public virtual async Task<Task> UpdateAsync(TEntity entity)
         {
-            if (ValidateDTOsState(dtos))
+            if (ValidateDTOsState(entity))
             {
-                _dbSet.Update(TransformDTOToEntity(new List<TDTOs> { dtos }).FirstOrDefault());
+                _dbSet.Update(entity);
                 _dbContext.SaveChanges();
                 return Task.CompletedTask;
             }
