@@ -116,7 +116,6 @@ namespace LDN.Framework.GenericRepository.Repository
         {
             if (ValidateDTOsState(entity))
             {
-                _dbSet.Update(entity);
                 _dbContext.SaveChanges();
                 return Task.CompletedTask;
             }
